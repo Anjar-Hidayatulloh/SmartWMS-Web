@@ -15,15 +15,13 @@ class AiController extends Controller
     {
         $items = Item::all();
         $aiOffline = false;
-        
-        // --- 1. PREPARE SUGGEST ZONING DATA ---
-        // Fetch mutation + goods_out counts for all items in the last 6 months
+
         $productsPayload = [];
         foreach ($items as $item) {
             $count = Transaction::where('item_id', $item->id)
                 ->whereIn('type', ['goods_out', 'mutation'])
                 ->count();
-                
+
             $productsPayload[] = [
                 'item_id' => (int)$item->id,
                 'sku' => $item->sku,
@@ -47,12 +45,11 @@ class AiController extends Controller
             Log::warning('AI Service offline for suggest-zoning: ' . $e->getMessage());
         }
 
-        // Mock Zoning suggestions if AI is offline for user demo safety
         if ($aiOffline || empty($zoningSuggestions)) {
-            // Static fallback categorization for presentation
+
             $zoningSuggestions = [];
             foreach ($productsPayload as $p) {
-                // Determine mock zoning based on tx count
+
                 if ($p['transaction_count'] > 10) {
                     $class = 'A';
                     $zone = 'Picking Zone (Near Dispatch) - Fallback';
@@ -63,7 +60,7 @@ class AiController extends Controller
                     $class = 'C';
                     $zone = 'Bulk Storage Zone (Rear) - Fallback';
                 }
-                
+
                 $zoningSuggestions[] = [
                     'item_id' => $p['item_id'],
                     'sku' => $p['sku'],
@@ -73,27 +70,24 @@ class AiController extends Controller
             }
         }
 
-        // Map item names back to suggestions
         $itemMap = $items->pluck('name', 'id')->toArray();
         foreach ($zoningSuggestions as &$suggest) {
             $suggest['item_name'] = $itemMap[$suggest['item_id']] ?? 'Unknown Item';
         }
 
-        // --- 2. PREPARE DEMAND FORECAST FOR ITEMS ---
-        // Let's generate forecasting suggestions for all items.
         $forecastList = [];
         foreach ($items as $item) {
-            // Group goods out transactions by month for the last 6 months
+
             $historicalData = [];
             for ($i = 5; $i >= 0; $i--) {
                 $monthStart = Carbon::now()->subMonths($i)->startOfMonth();
                 $monthEnd = Carbon::now()->subMonths($i)->endOfMonth();
-                
+
                 $qtyOut = Transaction::where('item_id', $item->id)
                     ->goodsOut()
                     ->whereBetween('transaction_date', [$monthStart, $monthEnd])
                     ->sum('qty');
-                    
+
                 $historicalData[] = [
                     'date' => $monthStart->format('Y-m-d'),
                     'qty_out' => (int)$qtyOut
@@ -122,9 +116,8 @@ class AiController extends Controller
                 $aiOffline = true;
             }
 
-            // Mock forecast fallback if offline
             if ($aiOffline || $forecastVal == 0) {
-                // Compute basic average as fallback
+
                 $totalOut = array_sum(array_column($historicalData, 'qty_out'));
                 $forecastVal = (int)round($totalOut / 6);
                 $confidence = 0.70;

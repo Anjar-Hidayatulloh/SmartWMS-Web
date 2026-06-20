@@ -2,8 +2,7 @@
     <x-slot name="title">Dashboard</x-slot>
 
     <div class="flex flex-col gap-6">
-        
-        <!-- Header Page Title -->
+
         <div class="flex items-center justify-between">
             <h2 class="text-2xl font-semibold text-[#212529] dark:text-white tracking-tight">Dashboard</h2>
             <div class="flex items-center gap-2">
@@ -18,7 +17,6 @@
             </div>
         </div>
 
-        <!-- Alert Notification for Expiring/Quarantined Stock -->
         @if($nearExpiredCount > 0 || $quarantinedCount > 0)
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 @if($nearExpiredCount > 0)
@@ -43,9 +41,8 @@
             </div>
         @endif
 
-        <!-- Row of 4 Cards (exactly matching SPACE template styles) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Card 1: SKU -->
+
             <div class="bg-white dark:bg-[#1a1b1e] border border-[#e9ecef] dark:border-[#2c2e33] rounded-lg p-6 flex items-center justify-between shadow-sm">
                 <div>
                     <div class="text-3xl font-light text-[#212529] dark:text-white tracking-tight">{{ number_format($totalProducts) }}</div>
@@ -54,7 +51,6 @@
                 <div class="text-[#40c057] text-3xl font-light select-none">↑</div>
             </div>
 
-            <!-- Card 2: Total Stock -->
             <div class="bg-white dark:bg-[#1a1b1e] border border-[#e9ecef] dark:border-[#2c2e33] rounded-lg p-6 flex items-center justify-between shadow-sm">
                 <div>
                     <div class="text-3xl font-light text-[#212529] dark:text-white tracking-tight">{{ number_format($totalStock) }}</div>
@@ -63,7 +59,6 @@
                 <div class="text-[#fa5252] text-3xl font-light select-none">↓</div>
             </div>
 
-            <!-- Card 3: Inbound Today -->
             <div class="bg-white dark:bg-[#1a1b1e] border border-[#e9ecef] dark:border-[#2c2e33] rounded-lg p-6 flex items-center justify-between shadow-sm">
                 <div>
                     <div class="text-3xl font-light text-[#212529] dark:text-white tracking-tight">+{{ number_format($inboundToday) }}</div>
@@ -72,7 +67,6 @@
                 <div class="text-[#40c057] text-3xl font-light select-none">↑</div>
             </div>
 
-            <!-- Card 4: Outbound Today -->
             <div class="bg-white dark:bg-[#1a1b1e] border border-[#e9ecef] dark:border-[#2c2e33] rounded-lg p-6 flex items-center justify-between shadow-sm">
                 <div>
                     <div class="text-3xl font-light text-[#212529] dark:text-white tracking-tight">+{{ number_format($outboundToday) }}</div>
@@ -82,10 +76,8 @@
             </div>
         </div>
 
-        <!-- Middle Section: Revenue Bar Chart (Left 2/3) & Server Status (Right 1/3) -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            <!-- Left Chart Card: Total Revenue (Movement) -->
+
             <div class="lg:col-span-2 bg-white dark:bg-[#1a1b1e] border border-[#e9ecef] dark:border-[#2c2e33] rounded-lg p-6 shadow-sm flex flex-col">
                 <div class="flex items-center justify-between mb-4 border-b border-[#f1f3f5] dark:border-[#2c2e33] pb-4">
                     <h4 class="text-sm font-semibold text-[#495057] dark:text-[#c1c2c5] uppercase tracking-wider">Pergerakan Barang</h4>
@@ -96,7 +88,6 @@
                 </div>
             </div>
 
-            <!-- Right Chart Card: Server Status (Warehouse Slots/Utility) -->
             <div class="bg-white dark:bg-[#1a1b1e] border border-[#e9ecef] dark:border-[#2c2e33] rounded-lg p-6 shadow-sm flex flex-col">
                 <div class="flex items-center justify-between mb-4 border-b border-[#f1f3f5] dark:border-[#2c2e33] pb-4">
                     <h4 class="text-sm font-semibold text-[#495057] dark:text-[#c1c2c5] uppercase tracking-wider">Server & Space Status</h4>
@@ -123,17 +114,15 @@
 
         </div>
 
-        <!-- Bottom Section: Tasks (Left 1/3) & Invoices/Aktivitas (Right 2/3) -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            <!-- Left Card: Tasks list matching template style -->
+
             <div class="bg-white dark:bg-[#1a1b1e] border border-[#e9ecef] dark:border-[#2c2e33] rounded-lg p-6 shadow-sm flex flex-col">
                 <div class="border-b border-[#f1f3f5] dark:border-[#2c2e33] pb-3 mb-4">
                     <h4 class="text-sm font-semibold text-[#495057] dark:text-[#c1c2c5] uppercase tracking-wider">Tugas Operasional</h4>
                     <p class="text-[10px] text-[#868e96] dark:text-[#909296] mt-0.5">Indikator penugasan operator saat ini</p>
                 </div>
                 <div class="flex-1 flex flex-col justify-center gap-5">
-                    <!-- Task 1: Quarantine check -->
+
                     <div>
                         <div class="flex items-center justify-between text-xs font-medium text-[#495057] dark:text-[#c1c2c5] mb-1.5">
                             <span>Karantina Kualitas (QC)</span>
@@ -147,7 +136,6 @@
                         </div>
                     </div>
 
-                    <!-- Task 2: Expiring checking -->
                     <div>
                         <div class="flex items-center justify-between text-xs font-medium text-[#495057] dark:text-[#c1c2c5] mb-1.5">
                             <span>Aging Stock (Kedaluwarsa < 30 Hari)</span>
@@ -161,7 +149,6 @@
                         </div>
                     </div>
 
-                    <!-- Task 3: Rack space occupied -->
                     <div>
                         <div class="flex items-center justify-between text-xs font-medium text-[#495057] dark:text-[#c1c2c5] mb-1.5">
                             <span>Ketersediaan Bins Terpakai</span>
@@ -174,7 +161,6 @@
                 </div>
             </div>
 
-            <!-- Right Card: Invoices list matching table layout -->
             <div class="lg:col-span-2 bg-white dark:bg-[#1a1b1e] border border-[#e9ecef] dark:border-[#2c2e33] rounded-lg shadow-sm overflow-hidden flex flex-col">
                 <div class="flex items-center justify-between border-b border-[#f1f3f5] dark:border-[#2c2e33] p-6">
                     <div>
@@ -247,7 +233,6 @@
 
     </div>
 
-    <!-- Charts Initialization Script -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Check current theme

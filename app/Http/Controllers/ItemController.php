@@ -69,7 +69,7 @@ class ItemController extends Controller
 
     public function destroy(Item $item)
     {
-        // Prevent deletion if active stock exists
+
         if ($item->stocks()->where('qty', '>', 0)->exists()) {
             return redirect()->route('master.items.index')
                 ->with('error', 'Gagal menghapus. Barang masih memiliki stok aktif di lokasi bin.');

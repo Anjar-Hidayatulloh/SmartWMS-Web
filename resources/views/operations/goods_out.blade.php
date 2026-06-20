@@ -11,7 +11,7 @@
             availableQty: 0,
             loadingLocations: false,
             loadingBatches: false,
-            
+
             // FEFO Suggestion States
             fefoQty: 1,
             fefoAllocations: [],
@@ -27,7 +27,7 @@
                     this.$nextTick(() => lucide.createIcons());
                 });
             },
-            
+
             fetchLocations() {
                 if (!this.itemId) {
                     this.locations = [];
@@ -49,7 +49,7 @@
                         this.availableQty = 0;
                         this.loadingLocations = false;
                     });
-                
+
                 this.fetchFefoSuggestions();
             },
 
@@ -91,20 +91,18 @@
                     });
             }
          }">
-        
-        <!-- Header -->
+
         <div>
             <h2 class="text-xl font-bold text-slate-900">Barang Keluar (Goods Out)</h2>
             <p class="text-xs text-slate-500 mt-0.5">Catat pengeluaran stok barang untuk pengiriman atau keperluan operasional</p>
         </div>
 
-        <!-- Form Card -->
         <div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
             <form action="{{ route('operations.goods-out.post') }}" method="POST" class="space-y-6">
                 @csrf
-                
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <!-- Item / Product selection -->
+
                     <div class="sm:col-span-2">
                         <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Pilih Barang</label>
                         <select name="item_id" x-model="itemId" @change="fetchLocations" required class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-3 text-sm text-slate-700 focus:outline-none focus:border-blue-500 transition-colors">
@@ -117,7 +115,6 @@
                         </select>
                     </div>
 
-                    <!-- Bin Location selection -->
                     <div>
                         <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                             Pilih Bin Lokasi Asal
@@ -131,7 +128,6 @@
                         </select>
                     </div>
 
-                    <!-- Batch selection -->
                     <div>
                         <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                             Pilih Batch
@@ -145,7 +141,6 @@
                         </select>
                     </div>
 
-                    <!-- Quantity input -->
                     <div>
                         <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                             Jumlah Pengeluaran (Qty)
@@ -157,7 +152,6 @@
                     </div>
                 </div>
 
-                <!-- FEFO Auto-Allocation Suggestion Box -->
                 <div x-show="itemId && fefoAllocations.length > 0" class="p-5 rounded-2xl bg-blue-50/50 border border-blue-100 animate-in fade-in slide-in-from-top-4 duration-200">
                     <div class="flex items-center gap-2 mb-3">
                         <i data-lucide="sparkles" class="h-4.5 w-4.5 text-blue-600 animate-pulse"></i>
@@ -185,7 +179,6 @@
                     </div>
                 </div>
 
-                <!-- Submit buttons -->
                 <div class="flex justify-end gap-3 pt-6 border-t border-slate-100">
                     <a href="{{ route('dashboard') }}" class="px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors flex items-center justify-center">
                         Kembali

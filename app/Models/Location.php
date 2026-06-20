@@ -16,8 +16,6 @@ class Location extends Model
         'zone',
     ];
 
-    /* ──────────── Relationships ──────────── */
-
     public function stocks(): HasMany
     {
         return $this->hasMany(Stock::class);

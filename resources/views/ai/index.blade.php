@@ -3,20 +3,19 @@
 
     <div class="flex flex-col gap-6" x-data="{ activeTab: 'forecast' }">
 
-        <!-- Top Header -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
                 <h2 class="text-xl font-bold text-slate-900">Analisis Kecerdasan Buatan (AI Engine)</h2>
                 <p class="text-xs text-slate-500 mt-0.5">Integrasi server Python FastAPI untuk analisis prediktif dan optimasi spasial</p>
             </div>
             <div class="flex bg-slate-200/60 p-1 rounded-xl self-start">
-                <button @click="activeTab = 'forecast'" 
+                <button @click="activeTab = 'forecast'"
                         :class="activeTab === 'forecast' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'"
                         class="px-4 py-2 text-xs font-semibold rounded-lg transition-all flex items-center gap-1.5">
                     <i data-lucide="trending-up" class="h-4 w-4"></i>
                     Peramalan Permintaan (Forecasting)
                 </button>
-                <button @click="activeTab = 'zoning'" 
+                <button @click="activeTab = 'zoning'"
                         :class="activeTab === 'zoning' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'"
                         class="px-4 py-2 text-xs font-semibold rounded-lg transition-all flex items-center gap-1.5">
                     <i data-lucide="map" class="h-4 w-4"></i>
@@ -25,7 +24,6 @@
             </div>
         </div>
 
-        <!-- Connection Status Header -->
         @if($aiOffline)
             <div class="flex items-start gap-3 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 animate-pulse">
                 <i data-lucide="shield-alert" class="h-5 w-5 text-rose-600 shrink-0 mt-0.5"></i>
@@ -47,7 +45,6 @@
             </div>
         @endif
 
-        <!-- TAB 1: DEMAND FORECASTING -->
         <div x-show="activeTab === 'forecast'" class="space-y-6">
             <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
                 <div class="p-6 border-b border-slate-100 bg-slate-50/50">
@@ -74,7 +71,7 @@
                                         <div class="text-xs text-slate-400 mt-0.5">{{ $fc['sku'] }}</div>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <!-- Simple visual dot markers representing chronological data points -->
+
                                         <div class="flex items-center justify-center gap-1.5">
                                             @foreach($fc['history'] as $hist)
                                                 <div class="flex flex-col items-center">
@@ -130,10 +127,9 @@
             </div>
         </div>
 
-        <!-- TAB 2: SMART ZONING -->
         <div x-show="activeTab === 'zoning'" class="space-y-6" x-cloak>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Zone explanation A -->
+
                 <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm border-l-4 border-l-emerald-500">
                     <div class="flex items-center gap-2 mb-2">
                         <span class="flex h-6 w-6 items-center justify-center rounded bg-emerald-100 text-emerald-800 font-bold text-xs">A</span>
@@ -141,8 +137,7 @@
                     </div>
                     <p class="text-xs text-slate-500">Kategori produk dengan tingkat transaksi paling tinggi (frekuensi penarikan sering). Direkomendasikan diletakkan di zona dekat pintu gerbang utama / dispatch area untuk meminimalkan waktu penyiapan barang.</p>
                 </div>
-                
-                <!-- Zone explanation B -->
+
                 <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm border-l-4 border-l-blue-500">
                     <div class="flex items-center gap-2 mb-2">
                         <span class="flex h-6 w-6 items-center justify-center rounded bg-blue-100 text-blue-800 font-bold text-xs">B</span>
@@ -151,7 +146,6 @@
                     <p class="text-xs text-slate-500">Kategori produk dengan frekuensi transaksi menengah. Direkomendasikan ditempatkan pada zona rak reguler di area tengah gudang untuk menghemat kapasitas penempatan kritis pintu masuk.</p>
                 </div>
 
-                <!-- Zone explanation C -->
                 <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm border-l-4 border-l-slate-400">
                     <div class="flex items-center gap-2 mb-2">
                         <span class="flex h-6 w-6 items-center justify-center rounded bg-slate-100 text-slate-800 font-bold text-xs">C</span>
@@ -161,7 +155,6 @@
                 </div>
             </div>
 
-            <!-- Suggestion Table -->
             <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
                 <div class="p-6 border-b border-slate-100 bg-slate-50/50">
                     <h3 class="font-bold text-slate-900 text-sm">Rekomendasi Pemetaan Spasial Barang (Velocity Suggestions)</h3>

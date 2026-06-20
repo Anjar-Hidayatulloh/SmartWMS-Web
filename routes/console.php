@@ -9,7 +9,7 @@ Artisan::command('inspire', function () {
 
 Artisan::command('app:quarantine-expired', function () {
     $today = \Carbon\Carbon::today();
-    
+
     $expiredStocks = \App\Models\Stock::where('status', 'available')
         ->whereNotNull('expired_at')
         ->whereDate('expired_at', '<', $today)
@@ -20,7 +20,7 @@ Artisan::command('app:quarantine-expired', function () {
 
     if ($count > 0) {
         foreach ($expiredStocks as $stock) {
-            $stock->update(['status' => 'quarantined']); // Or pending_quarantine
+            $stock->update(['status' => 'quarantined']);
         }
         $this->info("Berhasil mengkarantina {$count} batch stok yang telah kedaluwarsa.");
     } else {

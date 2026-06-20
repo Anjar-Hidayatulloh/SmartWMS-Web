@@ -33,8 +33,6 @@ class Transaction extends Model
         ];
     }
 
-    /* ──────────── Relationships ──────────── */
-
     public function item(): BelongsTo
     {
         return $this->belongsTo(Item::class);
@@ -59,8 +57,6 @@ class Transaction extends Model
     {
         return $this->hasMany(InventoryHistory::class);
     }
-
-    /* ──────────── Scopes ──────────── */
 
     public function scopeGoodsIn($query)
     {

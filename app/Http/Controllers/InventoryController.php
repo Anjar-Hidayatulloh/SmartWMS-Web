@@ -39,7 +39,6 @@ class InventoryController extends Controller
 
         $stocks = $query->paginate(15)->withQueryString();
 
-        // Get unique zones
         $zones = Location::select('zone')->distinct()->pluck('zone');
 
         return view('inventory.index', compact('stocks', 'zones', 'search', 'zone', 'status'));
@@ -67,18 +66,15 @@ class InventoryController extends Controller
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        
-        // Title
+
         $sheet->setCellValue('A1', 'LAPORAN STOK INVENTARIS WAREHOUSE (SMART WMS)');
         $sheet->mergeCells('A1:G1');
         $sheet->getStyle('A1')->getFont()->setBold(true)->setSize(14);
-        
-        // Date info
+
         $sheet->setCellValue('A2', 'Tanggal Ekspor: ' . date('d-m-Y H:i:s'));
         $sheet->mergeCells('A2:G2');
         $sheet->getStyle('A2')->getFont()->setItalic(true);
 
-        // Header Row
         $headers = ['No', 'SKU Barang', 'Nama Barang', 'Kategori', 'Batch No.', 'Kedaluwarsa', 'Lokasi Bin', 'Zona', 'Status', 'Jumlah (Qty)', 'Satuan'];
         $column = 'A';
         foreach ($headers as $header) {
@@ -88,7 +84,6 @@ class InventoryController extends Controller
             $column++;
         }
 
-        // Data Rows
         $row = 5;
         $no = 1;
         foreach ($stocks as $stock) {
@@ -106,7 +101,6 @@ class InventoryController extends Controller
             $row++;
         }
 
-        // Auto alignment and borders
         $writer = new Xlsx($spreadsheet);
 
         $response = new StreamedResponse(

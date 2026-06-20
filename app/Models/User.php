@@ -32,14 +32,10 @@ class User extends Authenticatable
         ];
     }
 
-    /* ──────────── Relationships ──────────── */
-
     public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
     }
-
-    /* ──────────── Helpers ──────────── */
 
     public function isAdmin(): bool
     {

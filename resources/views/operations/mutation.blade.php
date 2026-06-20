@@ -11,7 +11,7 @@
             availableQty: 0,
             loadingLocations: false,
             loadingBatches: false,
-            
+
             fetchLocations() {
                 if (!this.itemId) {
                     this.locations = [];
@@ -57,20 +57,18 @@
                 this.availableQty = selectedBatch ? selectedBatch.qty : 0;
             }
          }">
-        
-        <!-- Header -->
+
         <div>
             <h2 class="text-xl font-bold text-slate-900">Mutasi Lokasi Barang (Relocation)</h2>
             <p class="text-xs text-slate-500 mt-0.5">Pindahkan stok barang dari satu koordinat bin ke koordinat bin lainnya secara real-time</p>
         </div>
 
-        <!-- Form Card -->
         <div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
             <form action="{{ route('operations.mutation.post') }}" method="POST" class="space-y-6">
                 @csrf
-                
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <!-- Item / Product selection -->
+
                     <div class="sm:col-span-2">
                         <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Pilih Barang</label>
                         <select name="item_id" x-model="itemId" @change="fetchLocations" required class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-3 text-sm text-slate-700 focus:outline-none focus:border-blue-500 transition-colors">
@@ -83,7 +81,6 @@
                         </select>
                     </div>
 
-                    <!-- Origin Location selection -->
                     <div>
                         <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                             Pilih Bin Lokasi Asal
@@ -97,7 +94,6 @@
                         </select>
                     </div>
 
-                    <!-- Batch selection -->
                     <div>
                         <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                             Pilih Batch
@@ -111,7 +107,6 @@
                         </select>
                     </div>
 
-                    <!-- Destination Location selection -->
                     <div>
                         <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Bin Lokasi Tujuan</label>
                         <select name="destination_location_id" :disabled="!batchNo" required class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-3 text-sm text-slate-700 focus:outline-none focus:border-blue-500 transition-colors disabled:opacity-50">
@@ -124,7 +119,6 @@
                         </select>
                     </div>
 
-                    <!-- Quantity input -->
                     <div>
                         <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                             Jumlah Mutasi (Qty)
@@ -136,7 +130,6 @@
                     </div>
                 </div>
 
-                <!-- Submit buttons -->
                 <div class="flex justify-end gap-3 pt-6 border-t border-slate-100">
                     <a href="{{ route('dashboard') }}" class="px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors flex items-center justify-center">
                         Kembali

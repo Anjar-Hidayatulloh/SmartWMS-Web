@@ -27,8 +27,6 @@ class Stock extends Model
         ];
     }
 
-    /* ──────────── Relationships ──────────── */
-
     public function item(): BelongsTo
     {
         return $this->belongsTo(Item::class);
@@ -38,8 +36,6 @@ class Stock extends Model
     {
         return $this->belongsTo(Location::class);
     }
-
-    /* ──────────── Scopes ──────────── */
 
     public function scopeAvailable($query)
     {

@@ -3,13 +3,11 @@
 
     <div class="flex flex-col gap-6">
 
-        <!-- Top Header -->
         <div>
             <h2 class="text-xl font-bold text-slate-900">Audit Trail (Log Pergudangan)</h2>
             <p class="text-xs text-slate-500 mt-0.5">Riwayat lengkap mutasi barang, penerimaan, dan pengeluaran secara kronologis</p>
         </div>
 
-        <!-- Filter & Search Card -->
         <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
             <form action="{{ route('logs.index') }}" method="GET" class="flex flex-col md:flex-row gap-4 items-end">
                 <div class="flex-1 w-full">
@@ -56,7 +54,6 @@
             </form>
         </div>
 
-        <!-- Log Table Card -->
         <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm text-slate-600">
@@ -102,7 +99,7 @@
                                     {{ $log->batch_no }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right font-bold text-slate-950">
-                                    @if($log->type === 'goods_in') +@elseif($log->type === 'goods_out')-@endif{{ number_format($log->qty) }} 
+                                    @if($log->type === 'goods_in') +@elseif($log->type === 'goods_out')-@endif{{ number_format($log->qty) }}
                                     <span class="text-xs font-normal text-slate-400 capitalize">{{ $log->item->unit }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-xs">
@@ -147,7 +144,6 @@
                 </table>
             </div>
 
-            <!-- Pagination -->
             @if($logs->hasPages())
                 <div class="border-t border-slate-100 px-6 py-4">
                     {{ $logs->links() }}

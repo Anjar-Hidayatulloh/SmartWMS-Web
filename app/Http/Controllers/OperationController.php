@@ -14,7 +14,6 @@ use Carbon\Carbon;
 
 class OperationController extends Controller
 {
-    /* ──────────── GOODS IN ──────────── */
 
     public function showGoodsIn()
     {
@@ -41,7 +40,6 @@ class OperationController extends Controller
             $batchNo = $validated['batch_no'];
             $expiredAt = $validated['expired_at'];
 
-            // 1. Find or create stock entry
             $stock = Stock::where('item_id', $itemId)
                 ->where('location_id', $locationId)
                 ->where('batch_no', $batchNo)
@@ -67,10 +65,8 @@ class OperationController extends Controller
                 ]);
             }
 
-            // 2. Generate transaction code
             $txCode = 'TRX-IN-' . date('Ymd') . '-' . str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
 
-            // 3. Log transaction
             $tx = Transaction::create([
                 'transaction_code' => $txCode,
                 'type' => 'goods_in',
@@ -84,7 +80,6 @@ class OperationController extends Controller
                 'transaction_date' => Carbon::now(),
             ]);
 
-            // 4. Log history audit trail
             InventoryHistory::create([
                 'transaction_id' => $tx->id,
                 'item_id' => $itemId,
@@ -104,14 +99,12 @@ class OperationController extends Controller
         }
     }
 
-    /* ──────────── GOODS OUT ──────────── */
-
     public function showGoodsOut()
     {
         $items = Item::whereHas('stocks', function($q) {
             $q->where('qty', '>', 0);
         })->get();
-        
+
         $locations = Location::all();
         return view('operations.goods_out', compact('items', 'locations'));
     }
@@ -132,7 +125,6 @@ class OperationController extends Controller
             $batchNo = $validated['batch_no'];
             $qty = $validated['qty'];
 
-            // 1. Locate stock and validate
             $stock = Stock::where('item_id', $itemId)
                 ->where('location_id', $locationId)
                 ->where('batch_no', $batchNo)
@@ -150,7 +142,6 @@ class OperationController extends Controller
             $qtyBefore = $stock->qty;
             $qtyAfter = $qtyBefore - $qty;
 
-            // Update or remove stock
             if ($qtyAfter == 0) {
                 $stock->delete();
             } else {
@@ -158,10 +149,8 @@ class OperationController extends Controller
                 $stock->save();
             }
 
-            // 2. Generate transaction code
             $txCode = 'TRX-OUT-' . date('Ymd') . '-' . str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
 
-            // 3. Log transaction
             $tx = Transaction::create([
                 'transaction_code' => $txCode,
                 'type' => 'goods_out',
@@ -175,7 +164,6 @@ class OperationController extends Controller
                 'transaction_date' => Carbon::now(),
             ]);
 
-            // 4. Log history audit trail
             InventoryHistory::create([
                 'transaction_id' => $tx->id,
                 'item_id' => $itemId,
@@ -195,14 +183,12 @@ class OperationController extends Controller
         }
     }
 
-    /* ──────────── MUTATION (RELOCATION) ──────────── */
-
     public function showMutation()
     {
         $items = Item::whereHas('stocks', function($q) {
             $q->where('qty', '>', 0);
         })->get();
-        
+
         $locations = Location::all();
         return view('operations.mutation', compact('items', 'locations'));
     }
@@ -225,7 +211,6 @@ class OperationController extends Controller
             $batchNo = $validated['batch_no'];
             $qty = $validated['qty'];
 
-            // 1. Validate Origin Stock
             $originStock = Stock::where('item_id', $itemId)
                 ->where('location_id', $originLocId)
                 ->where('batch_no', $batchNo)
@@ -243,7 +228,6 @@ class OperationController extends Controller
             $originBefore = $originStock->qty;
             $originAfter = $originBefore - $qty;
 
-            // Update or remove origin stock
             if ($originAfter == 0) {
                 $originStock->delete();
             } else {
@@ -251,7 +235,6 @@ class OperationController extends Controller
                 $originStock->save();
             }
 
-            // 2. Update or create destination stock
             $destStock = Stock::where('item_id', $itemId)
                 ->where('location_id', $destLocId)
                 ->where('batch_no', $batchNo)
@@ -274,10 +257,8 @@ class OperationController extends Controller
                 ]);
             }
 
-            // 3. Generate transaction code
             $txCode = 'TRX-MUT-' . date('Ymd') . '-' . str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
 
-            // 4. Log transaction
             $tx = Transaction::create([
                 'transaction_code' => $txCode,
                 'type' => 'mutation',
@@ -291,7 +272,6 @@ class OperationController extends Controller
                 'transaction_date' => Carbon::now(),
             ]);
 
-            // 5. Log history audit trail (Origin & Destination)
             InventoryHistory::create([
                 'transaction_id' => $tx->id,
                 'item_id' => $itemId,
@@ -321,15 +301,13 @@ class OperationController extends Controller
         }
     }
 
-    /* ──────────── AJAX API FOR CLIENT INTERACTION ──────────── */
-
     public function getBatchesByItem(Request $request)
     {
         $itemId = $request->input('item_id');
         $locationId = $request->input('location_id');
 
         $query = Stock::where('item_id', $itemId)->where('qty', '>', 0);
-        
+
         if ($locationId) {
             $query->where('location_id', $locationId);
         }

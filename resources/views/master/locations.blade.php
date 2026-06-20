@@ -1,9 +1,9 @@
 <x-app-layout>
     <x-slot name="title">Daftar Bin Lokasi (Master Locations)</x-slot>
 
-    <div x-data="{ 
-        createOpen: false, 
-        editOpen: false, 
+    <div x-data="{
+        createOpen: false,
+        editOpen: false,
         editLoc: { id: '', bin_code: '', zone: '' },
         openEdit(loc) {
             this.editLoc = { ...loc };
@@ -11,7 +11,6 @@
         }
     }" class="flex flex-col gap-6">
 
-        <!-- Top Header & Add Button -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
                 <h2 class="text-xl font-bold text-slate-900">Master Bin Lokasi</h2>
@@ -23,7 +22,6 @@
             </button>
         </div>
 
-        <!-- Filter & Search Card -->
         <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
             <form action="{{ route('master.locations.index') }}" method="GET" class="flex flex-col md:flex-row gap-4 items-end">
                 <div class="flex-1 w-full">
@@ -60,7 +58,6 @@
             </form>
         </div>
 
-        <!-- Table Card -->
         <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm text-slate-600">
@@ -106,12 +103,11 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
                                     <div class="inline-flex items-center gap-1.5">
-                                        <!-- Edit trigger -->
+
                                         <button @click="openEdit({{ json_encode($loc) }})" class="p-1.5 rounded-lg text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-colors" title="Edit Lokasi">
                                             <i data-lucide="edit-3" class="h-4.5 w-4.5"></i>
                                         </button>
-                                        
-                                        <!-- Delete form -->
+
                                         <form action="{{ route('master.locations.destroy', $loc->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus lokasi bin ini?');" class="inline">
                                             @csrf
                                             @method('DELETE')
@@ -136,7 +132,6 @@
                 </table>
             </div>
 
-            <!-- Pagination links -->
             @if($locations->hasPages())
                 <div class="border-t border-slate-100 px-6 py-4">
                     {{ $locations->links() }}
@@ -144,7 +139,6 @@
             @endif
         </div>
 
-        <!-- CREATE MODAL -->
         <div x-show="createOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm" x-cloak>
             <div @click.away="createOpen = false" class="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
                 <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50">
@@ -153,7 +147,7 @@
                         <i data-lucide="x" class="h-5 w-5"></i>
                     </button>
                 </div>
-                
+
                 <form action="{{ route('master.locations.store') }}" method="POST" class="p-6 space-y-4">
                     @csrf
                     <div>
@@ -178,7 +172,6 @@
             </div>
         </div>
 
-        <!-- EDIT MODAL -->
         <div x-show="editOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm" x-cloak>
             <div @click.away="editOpen = false" class="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
                 <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50">
@@ -187,7 +180,7 @@
                         <i data-lucide="x" class="h-5 w-5"></i>
                     </button>
                 </div>
-                
+
                 <form :action="'{{ url('master/locations') }}/' + editLoc.id" method="POST" class="p-6 space-y-4">
                     @csrf
                     @method('PUT')

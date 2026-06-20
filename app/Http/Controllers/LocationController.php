@@ -24,8 +24,7 @@ class LocationController extends Controller
         }
 
         $locations = $query->paginate(15)->withQueryString();
-        
-        // Get unique zones for filter
+
         $zones = Location::select('zone')->distinct()->pluck('zone');
 
         return view('master.locations', compact('locations', 'zones', 'search', 'zone'));
@@ -59,7 +58,7 @@ class LocationController extends Controller
 
     public function destroy(Location $location)
     {
-        // Prevent deletion if active stock exists
+
         if ($location->stocks()->where('qty', '>', 0)->exists()) {
             return redirect()->route('master.locations.index')
                 ->with('error', 'Gagal menghapus. Lokasi bin masih menyimpan stok barang aktif.');

@@ -29,8 +29,6 @@ class InventoryHistory extends Model
         ];
     }
 
-    /* ──────────── Relationships ──────────── */
-
     public function transaction(): BelongsTo
     {
         return $this->belongsTo(Transaction::class);

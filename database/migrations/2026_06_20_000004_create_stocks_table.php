@@ -22,7 +22,6 @@ return new class extends Migration
             $table->unique(['item_id', 'location_id', 'batch_no']);
         });
 
-        // Conditionally apply database constraint only for MySQL/PostgreSQL, since SQLite does not support ALTER TABLE ADD CONSTRAINT
         if (DB::getDriverName() !== 'sqlite') {
             DB::statement('ALTER TABLE stocks ADD CONSTRAINT chk_stocks_qty_non_negative CHECK (qty >= 0)');
         }

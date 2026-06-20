@@ -57,7 +57,7 @@ class MobileAuthController extends Controller
 
     public function logout(Request $request)
     {
-        // Revoke the current access token
+
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([

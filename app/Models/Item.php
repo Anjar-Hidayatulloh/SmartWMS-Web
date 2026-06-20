@@ -28,8 +28,6 @@ class Item extends Model
         ];
     }
 
-    /* ──────────── Relationships ──────────── */
-
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
@@ -49,8 +47,6 @@ class Item extends Model
     {
         return $this->hasMany(InventoryHistory::class);
     }
-
-    /* ──────────── Accessors ──────────── */
 
     public function getTotalStockAttribute(): int
     {

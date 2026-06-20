@@ -17,8 +17,6 @@ class Category extends Model
         'description',
     ];
 
-    /* ──────────── Relationships ──────────── */
-
     public function items(): HasMany
     {
         return $this->hasMany(Item::class);

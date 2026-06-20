@@ -3,7 +3,6 @@
 
     <div class="flex flex-col gap-6">
 
-        <!-- Top Header & Export Buttons -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
                 <h2 class="text-xl font-bold text-slate-900">Monitor Stok Pergudangan</h2>
@@ -15,7 +14,6 @@
             </a>
         </div>
 
-        <!-- Filter & Search Card -->
         <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
             <form action="{{ route('inventory.index') }}" method="GET" class="flex flex-col md:flex-row gap-4 items-end">
                 <div class="flex-1 w-full">
@@ -61,7 +59,6 @@
             </form>
         </div>
 
-        <!-- Stock Table -->
         <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm text-slate-600">
@@ -169,7 +166,6 @@
                 </table>
             </div>
 
-            <!-- Pagination -->
             @if($stocks->hasPages())
                 <div class="border-t border-slate-100 px-6 py-4">
                     {{ $stocks->links() }}

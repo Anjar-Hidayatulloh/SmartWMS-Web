@@ -16,12 +16,10 @@ use Carbon\Carbon;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
+
     public function run(): void
     {
-        // 1. Seed Users (Admin & Operator)
+
         $admin = User::create([
             'name' => 'WMS Admin',
             'email' => 'admin@wms.com',
@@ -36,7 +34,6 @@ class DatabaseSeeder extends Seeder
             'role' => 'operator',
         ]);
 
-        // 2. Seed Categories
         $categories = [
             ['name' => 'Electronics', 'slug' => 'electronics', 'description' => 'Electronic goods and spare parts'],
             ['name' => 'Automotive', 'slug' => 'automotive', 'description' => 'Automotive components and accessories'],
@@ -49,7 +46,6 @@ class DatabaseSeeder extends Seeder
             $categoryModels[] = Category::create($cat);
         }
 
-        // 3. Seed Bin Locations
         $zones = ['ZONE-A', 'ZONE-B', 'ZONE-C', 'ZONE-D'];
         $locationModels = [];
         foreach ($zones as $zone) {
@@ -64,9 +60,8 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        // 4. Seed Items
         $itemsData = [
-            // Electronics
+
             [
                 'category_id' => $categoryModels[0]->id,
                 'sku' => 'SKU-ELEC-001',
@@ -83,7 +78,7 @@ class DatabaseSeeder extends Seeder
                 'unit' => 'pcs',
                 'initial_stock' => 250,
             ],
-            // Automotive
+
             [
                 'category_id' => $categoryModels[1]->id,
                 'sku' => 'SKU-AUTO-101',
@@ -100,7 +95,7 @@ class DatabaseSeeder extends Seeder
                 'unit' => 'canister',
                 'initial_stock' => 80,
             ],
-            // Packaging
+
             [
                 'category_id' => $categoryModels[2]->id,
                 'sku' => 'SKU-PACK-201',
@@ -109,7 +104,7 @@ class DatabaseSeeder extends Seeder
                 'unit' => 'pcs',
                 'initial_stock' => 1000,
             ],
-            // Chemicals
+
             [
                 'category_id' => $categoryModels[3]->id,
                 'sku' => 'SKU-CHEM-301',
@@ -125,17 +120,12 @@ class DatabaseSeeder extends Seeder
             $itemModels[] = Item::create($item);
         }
 
-        // 5. Seed Stock, Transactions & History
-        // We simulate a clean path: Item 1 has stock in Location 1, Item 2 has stock in Location 2, etc.
-        // Let's create transactions and stock entries.
-        
         $batches = ['BCH-20260601', 'BCH-20260602', 'BCH-20260603'];
-        
-        // Item 1: PLC Controller (Goods In)
+
         $tx1Code = 'TRX-IN-' . date('Ymd') . '-0001';
         $item1 = $itemModels[0];
-        $loc1 = $locationModels[0]; // ZONE-A-S1-R1
-        
+        $loc1 = $locationModels[0];
+
         $tx1 = Transaction::create([
             'transaction_code' => $tx1Code,
             'type' => 'goods_in',
@@ -168,11 +158,10 @@ class DatabaseSeeder extends Seeder
             'qty_after' => 100,
         ]);
 
-        // Item 2: Optical Sensor (Goods In)
         $tx2Code = 'TRX-IN-' . date('Ymd') . '-0002';
         $item2 = $itemModels[1];
-        $loc2 = $locationModels[1]; // ZONE-A-S1-R2
-        
+        $loc2 = $locationModels[1];
+
         $tx2 = Transaction::create([
             'transaction_code' => $tx2Code,
             'type' => 'goods_in',
@@ -205,18 +194,17 @@ class DatabaseSeeder extends Seeder
             'qty_after' => 250,
         ]);
 
-        // Item 3: Spark Plug (Goods In)
         $tx3Code = 'TRX-IN-' . date('Ymd') . '-0003';
         $item3 = $itemModels[2];
-        $loc3 = $locationModels[2]; // ZONE-A-S1-R3
-        
+        $loc3 = $locationModels[2];
+
         $tx3 = Transaction::create([
             'transaction_code' => $tx3Code,
             'type' => 'goods_in',
             'item_id' => $item3->id,
             'qty' => 50,
             'batch_no' => $batches[2],
-            'expired_at' => Carbon::now()->addMonth(), // Near expired!
+            'expired_at' => Carbon::now()->addMonth(),
             'user_id' => $operator->id,
             'origin_location_id' => null,
             'destination_location_id' => $loc3->id,
@@ -242,11 +230,10 @@ class DatabaseSeeder extends Seeder
             'qty_after' => 50,
         ]);
 
-        // Item 4: Synthetic Engine Oil (Goods In and Goods Out)
         $tx4Code = 'TRX-IN-' . date('Ymd') . '-0004';
         $item4 = $itemModels[3];
-        $loc4 = $locationModels[3]; // ZONE-A-S2-R1
-        
+        $loc4 = $locationModels[3];
+
         $tx4 = Transaction::create([
             'transaction_code' => $tx4Code,
             'type' => 'goods_in',
@@ -279,7 +266,6 @@ class DatabaseSeeder extends Seeder
             'qty_after' => 100,
         ]);
 
-        // Item 4 Goods Out (simulate picking)
         $tx5Code = 'TRX-OUT-' . date('Ymd') . '-0001';
         $tx5 = Transaction::create([
             'transaction_code' => $tx5Code,
@@ -306,11 +292,10 @@ class DatabaseSeeder extends Seeder
             'qty_after' => 80,
         ]);
 
-        // Item 5: Corrugated Box (Goods In)
         $tx6Code = 'TRX-IN-' . date('Ymd') . '-0005';
         $item5 = $itemModels[4];
-        $loc5 = $locationModels[4]; // ZONE-A-S2-R2
-        
+        $loc5 = $locationModels[4];
+
         $tx6 = Transaction::create([
             'transaction_code' => $tx6Code,
             'type' => 'goods_in',
@@ -343,11 +328,10 @@ class DatabaseSeeder extends Seeder
             'qty_after' => 1000,
         ]);
 
-        // Item 6: Isopropyl Alcohol (Goods In - Quarantined)
         $tx7Code = 'TRX-IN-' . date('Ymd') . '-0006';
         $item6 = $itemModels[5];
-        $loc6 = $locationModels[5]; // ZONE-A-S2-R3
-        
+        $loc6 = $locationModels[5];
+
         $tx7 = Transaction::create([
             'transaction_code' => $tx7Code,
             'type' => 'goods_in',
@@ -367,7 +351,7 @@ class DatabaseSeeder extends Seeder
             'qty' => 10,
             'batch_no' => 'BCH-CHEM-001',
             'expired_at' => Carbon::now()->addYear(),
-            'status' => 'quarantined', // Quarantined stock!
+            'status' => 'quarantined',
         ]);
 
         InventoryHistory::create([
