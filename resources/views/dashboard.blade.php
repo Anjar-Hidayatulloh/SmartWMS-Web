@@ -103,7 +103,11 @@
                         <div class="text-[10px] text-[#868e96] dark:text-[#909296] mt-0.5">Bins Space</div>
                     </div>
                     <div>
-                        <div class="text-sm font-bold text-emerald-600 dark:text-emerald-400">Active</div>
+                        @if($aiActive)
+                            <div class="text-sm font-bold text-emerald-600 dark:text-emerald-400">Active</div>
+                        @else
+                            <div class="text-sm font-bold text-rose-600 dark:text-rose-400">Offline</div>
+                        @endif
                         <div class="text-[10px] text-[#868e96] dark:text-[#909296] mt-0.5">AI API status</div>
                     </div>
                 </div>

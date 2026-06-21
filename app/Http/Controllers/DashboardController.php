@@ -9,6 +9,8 @@ use App\Models\Location;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Http;
+
 class DashboardController extends Controller
 {
     public function index()
@@ -71,6 +73,14 @@ class DashboardController extends Controller
         $occupiedLocations = Stock::where('qty', '>', 0)->select('location_id')->distinct()->count();
         $utilizationPercent = $totalLocations > 0 ? round(($occupiedLocations / $totalLocations) * 100, 1) : 0;
 
+        $aiActive = false;
+        try {
+            $response = Http::timeout(0.5)->get('http://127.0.0.1:8001/health');
+            $aiActive = $response->successful();
+        } catch (\Exception $e) {
+            $aiActive = false;
+        }
+
         return view('dashboard', compact(
             'totalProducts',
             'totalStock',
@@ -82,7 +92,8 @@ class DashboardController extends Controller
             'recentTransactions',
             'monthlyMovement',
             'totalLocations',
-            'utilizationPercent'
+            'utilizationPercent',
+            'aiActive'
         ));
     }
 }
