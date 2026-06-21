@@ -93,6 +93,11 @@
 
             @if(auth()->user()->isAdmin())
             <div class="px-4 pt-4 pb-2 text-[10px] font-bold uppercase tracking-widest text-[#adb5bd] dark:text-[#5c5f66]">Master Data (Admin)</div>
+            <a href="{{ route('master.categories.index') }}"
+               class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('master.categories*') ? 'bg-[#e8f4fd] dark:bg-[#102a45] text-[#1c7ed6] dark:text-[#4dabf7]' : 'text-[#495057] dark:text-[#c1c2c5] hover:bg-[#f8f9fa] dark:hover:bg-[#25262b] hover:text-[#212529] dark:hover:text-white' }}">
+                <i data-lucide="tag" class="h-5 w-5"></i>
+                Kategori Barang
+            </a>
             <a href="{{ route('master.items.index') }}"
                class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('master.items*') ? 'bg-[#e8f4fd] dark:bg-[#102a45] text-[#1c7ed6] dark:text-[#4dabf7]' : 'text-[#495057] dark:text-[#c1c2c5] hover:bg-[#f8f9fa] dark:hover:bg-[#25262b] hover:text-[#212529] dark:hover:text-white' }}">
                 <i data-lucide="box" class="h-5 w-5"></i>

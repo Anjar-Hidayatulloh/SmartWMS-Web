@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OperationController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\LogController;
@@ -56,6 +57,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('items', ItemController::class)->except(['create', 'show', 'edit']);
 
         Route::resource('locations', LocationController::class)->except(['create', 'show', 'edit']);
+
+        Route::resource('categories', CategoryController::class)->except(['create', 'show', 'edit']);
     });
 
 });

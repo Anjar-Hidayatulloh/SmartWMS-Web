@@ -4,9 +4,12 @@
     <div x-data="{
         createOpen: false,
         editOpen: false,
+        createAutoSku: false,
+        editAutoSku: false,
         editItem: { id: '', category_id: '', sku: '', name: '', description: '', unit: '', initial_stock: 0 },
         openEdit(item) {
             this.editItem = { ...item };
+            this.editAutoSku = false;
             this.editOpen = true;
         }
     }" class="flex flex-col gap-6">
@@ -159,8 +162,14 @@
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">SKU Barang (Unik)</label>
-                            <input type="text" name="sku" required class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500" placeholder="Contoh: SKU-ELEC-999">
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider">SKU Barang (Unik)</label>
+                                <label class="flex items-center gap-1.5 text-xs text-blue-600 font-medium cursor-pointer select-none">
+                                    <input type="checkbox" name="auto_sku" x-model="createAutoSku" value="1" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-3.5 w-3.5">
+                                    Auto SKU
+                                </label>
+                            </div>
+                            <input type="text" name="sku" :required="!createAutoSku" :disabled="createAutoSku" :class="createAutoSku ? 'bg-slate-100 text-slate-400 cursor-not-allowed border-slate-200' : 'bg-slate-50 text-slate-800 border-slate-200'" class="w-full border rounded-xl py-2.5 px-3 text-xs placeholder-slate-400 focus:outline-none focus:border-blue-500" placeholder="Contoh: SKU-ELEC-999">
                         </div>
 
                         <div>
@@ -174,7 +183,7 @@
                         </div>
 
                         <div class="col-span-2">
-                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Stok Awal Sistem</label>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Stok Awal</label>
                             <input type="number" name="initial_stock" required min="0" value="0" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500" placeholder="0">
                         </div>
 
@@ -219,8 +228,14 @@
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">SKU Barang (Unik)</label>
-                            <input type="text" name="sku" x-model="editItem.sku" required class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500">
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider">SKU Barang (Unik)</label>
+                                <label class="flex items-center gap-1.5 text-xs text-blue-600 font-medium cursor-pointer select-none">
+                                    <input type="checkbox" name="auto_sku" x-model="editAutoSku" value="1" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-3.5 w-3.5">
+                                    Auto SKU
+                                </label>
+                            </div>
+                            <input type="text" name="sku" x-model="editItem.sku" :required="!editAutoSku" :disabled="editAutoSku" :class="editAutoSku ? 'bg-slate-100 text-slate-400 cursor-not-allowed border-slate-200' : 'bg-slate-50 text-slate-800 border-slate-200'" class="w-full border rounded-xl py-2.5 px-3 text-xs placeholder-slate-400 focus:outline-none focus:border-blue-500">
                         </div>
 
                         <div>
@@ -234,7 +249,7 @@
                         </div>
 
                         <div class="col-span-2">
-                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Stok Awal Sistem</label>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Stok Awal</label>
                             <input type="number" name="initial_stock" x-model="editItem.initial_stock" required min="0" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500">
                         </div>
 

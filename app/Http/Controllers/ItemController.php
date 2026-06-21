@@ -6,6 +6,7 @@ use App\Models\Item;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class ItemController extends Controller
 {
@@ -35,14 +36,39 @@ class ItemController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $autoSku = $request->boolean('auto_sku');
+
+        $rules = [
             'category_id' => ['required', 'exists:categories,id'],
-            'sku' => ['required', 'string', 'max:100', 'unique:items,sku'],
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'unit' => ['required', 'string', 'max:50'],
             'initial_stock' => ['required', 'integer', 'min:0'],
-        ]);
+        ];
+
+        if ($autoSku) {
+            $rules['sku'] = ['nullable', 'string', 'max:100'];
+        } else {
+            $rules['sku'] = ['required', 'string', 'max:100', 'unique:items,sku'];
+        }
+
+        $validated = $request->validate($rules);
+
+        if ($autoSku || empty($validated['sku'])) {
+            $category = Category::findOrFail($validated['category_id']);
+            $prefix = Str::upper(substr(preg_replace('/[^A-Za-z0-9]/', '', $category->name), 0, 4));
+            if (strlen($prefix) < 3) {
+                $prefix = str_pad($prefix, 3, 'X');
+            }
+
+            $seq = 1;
+            do {
+                $sku = "SKU-" . $prefix . "-" . str_pad($seq, 3, '0', STR_PAD_LEFT);
+                $seq++;
+            } while (Item::where('sku', $sku)->exists());
+
+            $validated['sku'] = $sku;
+        }
 
         Item::create($validated);
 
@@ -52,14 +78,39 @@ class ItemController extends Controller
 
     public function update(Request $request, Item $item)
     {
-        $validated = $request->validate([
+        $autoSku = $request->boolean('auto_sku');
+
+        $rules = [
             'category_id' => ['required', 'exists:categories,id'],
-            'sku' => ['required', 'string', 'max:100', Rule::unique('items', 'sku')->ignore($item->id)],
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'unit' => ['required', 'string', 'max:50'],
             'initial_stock' => ['required', 'integer', 'min:0'],
-        ]);
+        ];
+
+        if ($autoSku) {
+            $rules['sku'] = ['nullable', 'string', 'max:100'];
+        } else {
+            $rules['sku'] = ['required', 'string', 'max:100', Rule::unique('items', 'sku')->ignore($item->id)];
+        }
+
+        $validated = $request->validate($rules);
+
+        if ($autoSku) {
+            $category = Category::findOrFail($validated['category_id']);
+            $prefix = Str::upper(substr(preg_replace('/[^A-Za-z0-9]/', '', $category->name), 0, 4));
+            if (strlen($prefix) < 3) {
+                $prefix = str_pad($prefix, 3, 'X');
+            }
+
+            $seq = 1;
+            do {
+                $sku = "SKU-" . $prefix . "-" . str_pad($seq, 3, '0', STR_PAD_LEFT);
+                $seq++;
+            } while (Item::where('sku', $sku)->exists());
+
+            $validated['sku'] = $sku;
+        }
 
         $item->update($validated);
 

@@ -46,18 +46,16 @@ class DatabaseSeeder extends Seeder
             $categoryModels[] = Category::create($cat);
         }
 
-        $zones = ['ZONE-A', 'ZONE-B', 'ZONE-C', 'ZONE-D'];
+        $locationsData = [
+            ['bin_code' => 'Cabang Karawang', 'zone' => 'Karawang'],
+            ['bin_code' => 'Cabang Cikarang', 'zone' => 'Cikarang'],
+            ['bin_code' => 'Cabang Bekasi', 'zone' => 'Bekasi'],
+            ['bin_code' => 'Cabang Jakarta Timur', 'zone' => 'Jakarta Timur'],
+            ['bin_code' => 'Cabang Jakarta Utara', 'zone' => 'Jakarta Utara'],
+        ];
         $locationModels = [];
-        foreach ($zones as $zone) {
-            for ($shelf = 1; $shelf <= 3; $shelf++) {
-                for ($row = 1; $row <= 3; $row++) {
-                    $binCode = "{$zone}-S{$shelf}-R{$row}";
-                    $locationModels[] = Location::create([
-                        'bin_code' => $binCode,
-                        'zone' => $zone,
-                    ]);
-                }
-            }
+        foreach ($locationsData as $loc) {
+            $locationModels[] = Location::create($loc);
         }
 
         $itemsData = [
@@ -330,7 +328,7 @@ class DatabaseSeeder extends Seeder
 
         $tx7Code = 'TRX-IN-' . date('Ymd') . '-0006';
         $item6 = $itemModels[5];
-        $loc6 = $locationModels[5];
+        $loc6 = $locationModels[4];
 
         $tx7 = Transaction::create([
             'transaction_code' => $tx7Code,
